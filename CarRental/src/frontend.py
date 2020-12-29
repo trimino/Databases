@@ -92,24 +92,24 @@ class MainPage:
 
 
         # OUTPUT TABLE AND SCROLLBARS (For data_frame and the canvas)
-        # self.y_scroll = Scrollbar(data_frame, orient=VERTICAL)
-        # self.x_scroll = Scrollbar(data_frame, orient=HORIZONTAL)
+        self.y_scroll = Scrollbar(data_frame, orient=VERTICAL)
+        self.x_scroll = Scrollbar(data_frame, orient=HORIZONTAL)
 
-        # self.listbox = Listbox(data_frame, 
-        #                         xscrollcommand=self.x_scroll.set, yscrollcommand=self.y_scroll.set,
-        #                         width=85, height=35)
+        self.listbox = Listbox(data_frame, 
+                                xscrollcommand=self.x_scroll.set, yscrollcommand=self.y_scroll.set,
+                                width=85, height=35)
 
-        # self.y_scroll['command'] = self.listbox.yview
-        # self.x_scroll['command'] = self.listbox.xview
+        self.y_scroll['command'] = self.listbox.yview
+        self.x_scroll['command'] = self.listbox.xview
 
-        # self.listbox.grid(row=0, column=0, sticky=NSEW)
-        # self.y_scroll.grid(row=0, column=1, sticky=NS)
-        # self.x_scroll.grid(row=1, column=0, sticky=EW)
+        self.listbox.grid(row=0, column=0, sticky=NSEW)
+        self.y_scroll.grid(row=0, column=1, sticky=NS)
+        self.x_scroll.grid(row=1, column=0, sticky=EW)
 
-        # self.ef_y_scroll = Scrollbar(canvas, orient=VERTICAL, command=canvas.yview)
-        # self.ef_y_scroll.grid(row=0, column=5, sticky=NS)
-        # canvas['yscrollcommand'] = self.ef_y_scroll.set
-        # canvas.configure( scrollregion=(0, 0, 200, 1000))
+        self.ef_y_scroll = Scrollbar(canvas, orient=VERTICAL, command=canvas.yview)
+        self.ef_y_scroll.grid(row=0, column=5, sticky=NS)
+        canvas['yscrollcommand'] = self.ef_y_scroll.set
+        canvas.configure( scrollregion=(0, 0, 200, 1000))
 
 
 
@@ -225,14 +225,11 @@ class MainPage:
 
 
 
-        # RATE LABEL, ENTRY AND BUTTONS
+        # RATE LABEL, ENTRY AND BUTTONS (GISELLE'S SECTION)
         # Add labels to rate_frame the different labels are: 'Car Type', 'Category', 'Weekly', and 'Daily'
         # background color of the labels should be 'ghost white'
         # font should be label_font 
-        self.lbrate_car_type = Label(rate_frame, font=label_font, text='Car Type:', bg='ghost white')
-        self.lbrate_category = Label(rate_frame, font=label_font, text='Category:', bg='ghost white')
-        self.lbrate_weekly   = Label(rate_frame, font=label_font, text='Weekly:'  , bg='ghost white')
-        self.lbrate_daily    = Label(rate_frame, font=label_font, text='Daily:'    , bg='ghost white')
+
 
 
         # Add entries to the rate_frame next to the labels
@@ -243,10 +240,7 @@ class MainPage:
 
 
         # show on the screen by using the grid()
-        self.lbrate_car_type.grid( row=0, column=0, padx=2, pady=2 )
-        self.lbrate_category.grid( row=1, column=0, padx=2, pady=2 )
-        self.lbrate_weekly  .grid( row=2, column=0, padx=2, pady=2 )
-        self.lbrate_daily   .grid( row=3, column=0, padx=2, pady=2 )
+
 
 if __name__ == '__main__':
     root = Tk()
