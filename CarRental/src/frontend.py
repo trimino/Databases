@@ -6,7 +6,7 @@ from tkinter import ttk, font
 class MainPage:
     def __init__(self, root):
         x = '1150'
-        y = '650'
+        y = '800'
 
 
         # --------------------------- FONTS ---------------------------
@@ -16,8 +16,8 @@ class MainPage:
 
 
         # --------------------------- GUI Variables ---------------------------
-        c_name  = StringVar()
-        c_phone = StringVar()
+        c_name          = StringVar()
+        c_phone         = StringVar()
 
         v_vehicleID     = StringVar()
         v_description   = StringVar()
@@ -63,31 +63,30 @@ class MainPage:
         self.root = root
         self.root.title('Covid Car Rental')
         self.root.geometry('%sx%s+0+0' % (x,y))
+
         self.root.config(bg = 'white') 
 
 
 
         # --------------------------- FRAMES AND CANVAS ---------------------------
-        self.canvas         = Canvas(self.root, bg='ghost white')
+        
+        self.main_frame     = Frame(self.root, bg='ghost white')
         self.data_frame     = LabelFrame(self.root, bg='ghost white', bd =1, text='Output', font=label_frame_font)        
 
-        self.main_frame     = Frame(self.canvas, bg='ghost white', bd=1, width=100, height=100)
 
         self.customer_frame = LabelFrame(self.main_frame, bg='ghost white', bd=1, font=label_frame_font, relief=GROOVE, text='Customer')
         self.vehicle_frame  = LabelFrame(self.main_frame, bg='ghost white', bd=1, font=label_frame_font, relief=GROOVE, text='Vehicle')
         self.rental_frame   = LabelFrame(self.main_frame, bg='ghost white', bd=1, font=label_frame_font, relief=GROOVE, text='Rental')
         self.rate_frame     = LabelFrame(self.main_frame, bg='ghost white', bd=1, font=label_frame_font, relief=GROOVE, text='Rate')
 
-        self.canvas         .grid(row=0, column=0, rowspan=8, columnspan=3)
-        self.canvas         .create_window((0,0), window=self.main_frame, anchor='nw')
 
-        self.main_frame     .grid(row=0, column=2)
+        
+        self.main_frame     .grid(row=0, column=0, rowspan=3)
         self.data_frame     .grid(row=0, column=4, padx=100, rowspan=4, columnspan=4)
 
         self.customer_frame .grid(row=0, column=1, padx=10, pady=10)
         self.vehicle_frame  .grid(row=1, column=1, padx=10, pady=10)
         self.rental_frame   .grid(row=2, column=1, padx=10, pady=10)
-        self.rate_frame     .grid(row=3, column=1, padx=10, pady=10)
 
 
 
@@ -104,19 +103,6 @@ class MainPage:
         self.listbox            .grid(row=0, column=0, sticky=NSEW)
         self.y_scroll           .grid(row=0, column=1, sticky=NS)
         self.x_scroll           .grid(row=1, column=0, sticky=EW)
-
-        # Canvas Scrollbar
-        self.scrollbar                  = Scrollbar(self.canvas, command=self.canvas.yview, orient=VERTICAL)
-        self.canvas['yscrollcommand']   = self.scrollbar.set
-
-        self.main_frame.bind('<Configure>', 
-            lambda e: self.canvas.configure(
-                scrollregion=self.canvas.bbox('all')
-            )
-        )
-
-        self.scrollbar  .grid(row=0, column=0, sticky=NS)
-
 
 
         # --------------------------- CUSTOMER ---------------------------
@@ -252,26 +238,14 @@ class MainPage:
         # --------------------------- RATE ---------------------------
         
         # LABEL
-        # Add labels to self.rate_frame the different labels are: 'Car Type', 'Category', 'Weekly', and 'Daily'
-        # background color of the labels should be 'ghost white'
-        # font should be label_font 
-        # self.lbr_custIDr        = Label(self.rate_frame, font=label_font, text='Customer ID:', bg='ghost white')
-        # self.lbr_vehicleIDr      = Label(self.rate_frame, font=label_font, text='Vehicle ID:' , bg='ghost white')
-        # self.lbr_order_dater     = Label(self.rate_frame, font=label_font, text='Order Date:' , bg='ghost white')
-        # l = Label(self.rate_frame, text="Hello", font="-size 50")
-        # l.grid()
+        l = Label(self.rate_frame, text="Hello", font="-size 50")
+        l.grid()
 
-        # l = Label(self.rate_frame, text="Hello", font="-size 50")
-        # l.grid()
-
-        # l = Label(self.rate_frame, text="Hello", font="-size 50")
-        # l.grid()
-        # # self.lbr_custIDr.grid()
-        # self.lbr_vehicleIDr.grid()
-        # self.lbr_order_dater.grid()
+        l = Label(self.rate_frame, text="Hello", font="-size 50")
+        l.grid()
 
         # ENTRY BOXES
-        # Add entries to the self.rate_frame next to the labels
+        # Add entries to the self.rate_frame next to the labels,
         # Font should be equal to label_font
         # background color should be 'ghost white'
         # width should be 40 characters
