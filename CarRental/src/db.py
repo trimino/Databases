@@ -104,30 +104,27 @@ class DB:
             
             statement = statement + cond[:-1]
         
-        try:
-            self.mycursor = self.mydb.cursor()
-            
-            self.mycursor.execute(statement)
-
-            query = self.mycursor.fetchall()
-
-            self.mycursor.close()
-
-            return query
-            
-        except mysql.connector.Error as e:
-            if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
-            elif e.errno == errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
-            else:
-                print(e)  
+        return self.execute_query(statement)
 
     # @brief: delete a certain tuple in the database from a specific table
     # @param: the table and any arguments
     # @return: the amount of rows affected
-    def delete_data(self, table, *args):
-        pass
+    # DELETE FROM <table> WHERE condition=value
+    def delete_data(self, table, conditions):
+        values = []
+        cond = ''
+        statement = 'DELETE FROM {} WHERE '.format(table)
+
+        if len(conditions) == 0:
+            return -1
+
+        for k,v in conditions.items():
+            cond = k + '=' + '%s' + ','
+            values.append(v)
+        
+        statement = statement + cond[:-1]
+
+        return self.execute_state(statement, values)
 
     # @brief: update a certain record in the database
     # @param1: is the table that you would like to work on 
@@ -208,6 +205,10 @@ class DB:
             print('ERROR: {}'.format(e.errors))   
 
 
+    # @brief: insert or update data into the database 
+    # @param1: is the SQL query to execute (only to execute one)
+    # @param2: are the values to be inserted into to the database
+    # @return: the amount of rows affected 
     def execute_state(self, statement, values):
         try:
             self.mycursor = self.mydb.cursor()
@@ -221,7 +222,6 @@ class DB:
             self.mycursor.close()
 
             return result
-
         except mysql.connector.Error as e:
             if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
@@ -232,6 +232,29 @@ class DB:
             else:
                 print(e)
                 return -1
+    
+    # @brief: to execute one command such as  select
+    # @param1: SQL query to be executed (only one not many) with no values
+    # @return: returns a list if a SELECT query was run 
+    def execute_query(self, statement):
+        try:
+            self.mycursor = self.mydb.cursor()
+            
+            self.mycursor.execute(statement)
+
+            query = self.mycursor.fetchall()
+
+            self.mycursor.close()
+
+            return query
+            
+        except mysql.connector.Error as e:
+            if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif e.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(e)  
 
     
     def close_db(self):
@@ -258,9 +281,14 @@ cond = {
     'custName' : 'FUCK YO MAMMA BITCH'
 }
 
-g = db.view_data('Customer', cond)
+# g = db.view_data('Customer', cond)
 
-for x in g:
-    print(x)
+# for x in g:
+#     print(x)
 
 
+cond = {
+    'custName' : 'FUCK YO MAMMA BITCH'
+}
+db.delete_data('Customer', cond)
+db.close_db()
