@@ -1,12 +1,12 @@
 from tkinter import *
 from tkinter import ttk, font
-
+from db import *
 
 
 class MainPage:
     def __init__(self, root):
-        x = '1150'
-        y = '800'
+        x = '1200'
+        y = '650'
 
 
         # --------------------------- FONTS ---------------------------
