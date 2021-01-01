@@ -86,10 +86,42 @@ class DB:
         
 
     # @brief: view data from a specific 
-    # @param1: table to query database
+    # @param1: is the table being alter
+    # @param2: is a dictionary of conditions that will filter the search. Key=conditon (attribute name) and Value=value
     # @return: the result and if NULL then return "NOTHNG FOUND"
-    def view_data(self, table, *args):
-        pass
+    def view_data(self, table, conditions):
+        values = []
+        cond = ''
+        statement = 'SELECT * FROM {} '.format(table)
+
+        if len(conditions) > 0:
+            statement = statement + 'WHERE '
+            for k,v in conditions.items():
+                if ' ' in v:
+                    cond = k + '=' + '\'' + v + '\''+ ','
+                else:
+                    cond = k + '=' + v + ','
+            
+            statement = statement + cond[:-1]
+        
+        try:
+            self.mycursor = self.mydb.cursor()
+            
+            self.mycursor.execute(statement)
+
+            query = self.mycursor.fetchall()
+
+            self.mycursor.close()
+
+            return query
+            
+        except mysql.connector.Error as e:
+            if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif e.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(e)  
 
     # @brief: delete a certain tuple in the database from a specific table
     # @param: the table and any arguments
@@ -106,6 +138,7 @@ class DB:
     # @return: the amount of rows affected
     def update_data(self, table, attributes, conditions):
         values = []
+        cond = ''
         statement = 'UPDATE {} SET '.format(table)
 
         # there is nothing to update so return 
@@ -120,11 +153,11 @@ class DB:
 
         for k,v in conditions.items():
             if ' ' in v:
-                statement = statement + k + '=' + '\'' + v + '\''+ ','
+                cond = k + '=' + '\'' + v + '\''+ ','
             else:
-                statement = statement + k + '=' + v +','    
+                cond = k + '=' + v +','    
             
-
+        statement = statement + cond
         statement = statement[:-1]
         return self.execute_state(statement, values)
         
@@ -183,11 +216,11 @@ class DB:
 
             self.mydb.commit()
 
-            num_affect = str(self.mycursor.rowcount)
+            result = str(self.mycursor.rowcount)
 
             self.mycursor.close()
 
-            return num_affect
+            return result
 
         except mysql.connector.Error as e:
             if e.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -211,12 +244,23 @@ db = DB(c)
 # i = db.insert_data('INSERT INTO Customer (custName, phone) ', 'PETER DEREK', '(817) 999-9699')
 # print(i)
 
-a = {
-    'custName' : 'UPDATED NAME',
-    'phone'    : '(698) 696-9699'
+# a = {
+#     'custName' : 'UPDATED NAME',
+#     'phone'    : '(698) 696-9699'
+# }
+
+# c = {
+#     'custName' : 'PETER DEREK'
+# }
+# j = db.update_data('Customer', a, c)
+
+cond = {
+    'custName' : 'FUCK YO MAMMA BITCH'
 }
 
-c = {
-    'custName' : 'PETER DEREK'
-}
-j = db.update_data('Customer', a, c)
+g = db.view_data('Customer', cond)
+
+for x in g:
+    print(x)
+
+
